@@ -97,8 +97,14 @@ def train_model(dataset='mnist',
         #Train theo batch
         idx = np.random.randint(0, x.shape[0], batch_size)
         loss_batch = dec_model.train_on_batch(x=x[idx], y=p[idx])
-        loss_history.append(loss_batch)  
-
+        loss_history.append(loss_batch) 
+        """====DA option
+        augmented_data_gen = data_augmenter.flow(x, p, batch_size=batch_size)
+        for _ in range(len(x) // batch_size):
+            x_batch, p_batch = next(augmented_data_gen)
+            loss_batch = dec_model.train_on_batch(x=x_batch, y=p_batch)
+            loss_history.append(loss_batch)   
+        """
     #4
     print("=== Evaluating Clustering ===")
     q = dec_model.predict(x, verbose=0)
